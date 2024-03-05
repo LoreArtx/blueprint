@@ -11,8 +11,8 @@ const config: Config = {
       colors:{
         "night":"#0A090C",
         "milk":"#F0EDEE",
-        "darkGreen":"#07393C",
-        "lightGreen":"#2C666E",
+        "lazurite":"#2660A4",
+        "olive":"#1F272B",
         "sea":"#90DDF0",
         "error":"#FF4400",
         "info":"#FFAE00",
