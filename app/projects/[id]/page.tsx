@@ -1,7 +1,10 @@
 import React from 'react'
 
-export const ProjectPage = () => {
+const ProjectPage = () => {
     return (
         <div>ProjectPage</div>
     )
 }
+
+export default ProjectPage
+
