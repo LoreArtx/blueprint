@@ -24,6 +24,7 @@ func main() {
 	if api != nil{
 		users := api.Group("/users")
 		users.GET("/", routes.GetAllUsers)
+		users.POST("/create", routes.CreateUser)
 	}
 
 	router.Run(":"+port)

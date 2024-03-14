@@ -33,3 +33,10 @@ func GetAllUsers(c *gin.Context){
 	defer cancel()
 	c.JSON(http.StatusOK,users)
 }
+
+func CreateUser(c *gin.Context){
+	var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+	var user models.User
+	defer cancel()
+	c.JSON(http.StatusOK, user)
+}
