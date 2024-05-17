@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
+import AddUser from "./helpers/AddUser"
 
 
 export const options : NextAuthOptions = {
@@ -12,7 +13,7 @@ export const options : NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks:{
     async signIn({user, account}) {
-      console.log(user, account)
+      await AddUser(user,account)
       return true
     },
   },

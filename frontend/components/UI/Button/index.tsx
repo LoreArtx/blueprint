@@ -6,8 +6,6 @@ interface ButtonProps {
     children: React.ReactNode
 }
 
-const buttonVariants = cva("")
-
 const Button: FC<ButtonProps> = ({ children }) => {
     return <button>{children}</button>;
 }

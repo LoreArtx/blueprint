@@ -7,6 +7,7 @@ import { options } from '@/app/api/auth/[...nextauth]/options'
 
 const Navbar = async () => {
     const session = await getServerSession(options);
+    console.log(session)
     return (
         <nav className='flex justify-between items-center bg-lazurite text-milk px-[50px] py-[7px]'>
             <div>

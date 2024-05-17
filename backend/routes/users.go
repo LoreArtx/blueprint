@@ -5,6 +5,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -34,9 +35,55 @@ func GetAllUsers(c *gin.Context){
 	c.JSON(http.StatusOK,users)
 }
 
-func CreateUser(c *gin.Context){
-	var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
-	var user models.User
-	defer cancel()
-	c.JSON(http.StatusOK, user)
+// func GetUserByEmail(c *gin.Context) {
+//     var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+//     defer cancel()
+
+//     email := c.Param("email")
+//     var user models.User
+//     err := UsersCollection.FindOne(ctx, bson.D{{Key: "email", Value: email}}).Decode(&user)
+//     if err != nil {
+//         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+//         return
+//     }
+
+//     c.JSON(http.StatusOK, user)
+// }
+
+
+func CreateUser(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+    defer cancel()
+
+    var reqData models.CreateUserRequestBody
+    if err := c.ShouldBindJSON(&reqData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    var existingUser models.User
+    err := UsersCollection.FindOne(ctx, bson.D{{Key: "email", Value: reqData.Email}}).Decode(&existingUser)
+    if err == nil {
+        c.JSON(http.StatusConflict, gin.H{"error": "User with this email already exists"})
+        return
+    } else if err != mongo.ErrNoDocuments {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    userData := models.User{
+        Name:      reqData.Name,
+        Email:     reqData.Email,
+        Image:     reqData.Image,
+        GitHubID:  reqData.ID,
+        CreatedAt: time.Now(),
+    }
+
+    _, err = UsersCollection.InsertOne(ctx, userData)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusCreated, gin.H{"message": "User created successfully"})
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import Navbar from "@/components/Navbar";
-import AuthProvider from "./context/AuthProvider";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,9 +21,7 @@ export default async function RootLayout({
           <main className="relative flex-auto">
             {children}
           </main>
-          <footer>
-            FOOTER
-          </footer>
+          <Footer />
         </section>
       </body>
     </html>
