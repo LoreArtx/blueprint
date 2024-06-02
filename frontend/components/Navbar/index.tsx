@@ -12,9 +12,9 @@ const Navbar = async ({ isLoginPage = false }: { isLoginPage?: boolean }) => {
             <div>
                 <Link href={"/"} className='text-[20px]'>Blueprint</Link>
             </div>
-            {!isLoginPage && <ul className='flex gap-[30px]'>
+            {!isLoginPage && <ul className='flex justify-center items-center gap-[30px]'>
                 <Link href={"/projects/create"}>Add project</Link>
-                {session ? <AuthOptions /> : <NotAuthOptions />}
+                {session ? <AuthOptions session={session} /> : <NotAuthOptions />}
             </ul>}
         </nav>
     )
