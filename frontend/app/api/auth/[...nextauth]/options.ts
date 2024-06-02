@@ -12,10 +12,19 @@ export const options : NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks:{
-    async signIn({user, account}) {
-      await AddUser(user,account)
+    async signIn() {
       return true
     },
+    // async jwt({token, user, account}){
+    //   const dbUser = await AddUser(user,account)
+    //   token.id = dbUser.ID
+    //   return token
+    // },
+    // async session({token, session}){
+    //     //@ts-ignore
+    //     session.user.id=token.id
+    //   return session
+    // }
   },
   pages:{
     signIn: "/signin"
