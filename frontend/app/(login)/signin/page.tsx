@@ -48,11 +48,13 @@ const SignInPage = () => {
                                 </label>
                             </div>
 
-                            <div className="mb-6 flex items-center justify-end">
+                            <div className="mb-6 flex items-center justify-end gap-[20px]">
                                 <a
                                     href="#!"
                                     className="text-blue-500 focus:outline-none dark:text-primary-400"
                                 >Forgot password?</a>
+
+                                <a href="http://localhost:3000/signup" className="text-blue-500 focus:outline-none">Dont have an account?</a>
                             </div>
 
                             <button

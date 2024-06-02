@@ -21,10 +21,4 @@ type CreateUserRequestBody struct {
     Name            string `json:"name"`
     Email           string `json:"email"`
     Image           string `json:"image"`
-    Provider        string `json:"provider"`
-    Type            string `json:"type"`
-    ProviderAccountID string `json:"providerAccountId"`
-    AccessToken     string `json:"access_token"`
-    TokenType       string `json:"token_type"`
-    Scope           string `json:"scope"`
 }

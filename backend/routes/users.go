@@ -3,6 +3,7 @@ package routes
 import (
 	"blueprint/models"
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -59,17 +60,18 @@ func CreateUser(c *gin.Context) {
     if err := c.ShouldBindJSON(&reqData); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
-    }
-
+    }    
     var existingUser models.User
     err := UsersCollection.FindOne(ctx, bson.D{{Key: "email", Value: reqData.Email}}).Decode(&existingUser)
     if err == nil {
-        c.JSON(http.StatusConflict, gin.H{"error": "User with this email already exists"})
+        fmt.Println("exists") // Додано для логування отриманих даних
+        c.JSON(http.StatusConflict, existingUser)
         return
     } else if err != mongo.ErrNoDocuments {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
+    fmt.Println("dont") // Додано для логування отриманих даних
 
     userData := models.User{
         Name:      reqData.Name,
@@ -85,5 +87,5 @@ func CreateUser(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusCreated, gin.H{"message": "User created successfully"})
+    c.JSON(http.StatusCreated, userData)
 }
