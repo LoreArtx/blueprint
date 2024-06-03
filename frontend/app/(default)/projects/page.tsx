@@ -9,8 +9,6 @@ const ProjectsListPage = () => {
     const session = useSession()
     //@ts-ignore
     const { data, loading, error } = useFetchData<IBlueprint[] | null>("http://localhost:5555/api/blueprints/user/" + session.data?.user.id)
-    //@ts-ignore
-    console.log("http://localhost:5555/api/blueprints/user/" + session.data?.user.id)
     if (loading) {
         return <div>Loading...</div>;
     }
