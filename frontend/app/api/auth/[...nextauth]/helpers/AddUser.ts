@@ -1,9 +1,7 @@
-import { Account, User } from "next-auth"
+import { User } from "next-auth"
 import { AdapterUser } from "next-auth/adapters"
 
-async function AddUser(user: AdapterUser|User, account:Account|null){
-
-  console.table(user)
+async function AddUser(user: AdapterUser|User){
     const res = await fetch("http://localhost:5555/api/users/create", {
         method:"POST",
         headers:{
@@ -18,7 +16,6 @@ async function AddUser(user: AdapterUser|User, account:Account|null){
         })
       })
     const dbUser = await res.json()
-    console.log(dbUser)
     return dbUser;
 
 }
