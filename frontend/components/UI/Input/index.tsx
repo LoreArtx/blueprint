@@ -1,6 +1,7 @@
 "use client"
 
 import React, { ChangeEvent, FC } from 'react'
+import { twMerge } from 'tailwind-merge';
 
 interface InputProps {
     type: 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'text' | 'time' | 'url' | 'week';
@@ -8,9 +9,10 @@ interface InputProps {
     value: string | number
     name: string
     placeholder: string
-    error: boolean
+    error?: boolean
     disabled?: boolean
     required?: boolean
+    styles?: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -23,17 +25,36 @@ const Input: FC<InputProps> = ({
     error,
     disabled,
     required,
+    styles,
     onChange,
 }) => {
+
+    const inputClassName = twMerge(
+        'bg-milk border text-night text-sm rounded-lg focus:ring-lazurite focus:border-lazurite block w-full p-2.5',
+        error ? 'border-error' : 'border-gray-300',
+        disabled && 'bg-disabled cursor-not-allowed',
+        styles ? styles : "",
+    );
+
+
     return (
         <div>
-            <label htmlFor={name}>{label}</label>
-            <input type={type} value={value} id={name} placeholder={placeholder} disabled={disabled} onChange={onChange} required={required}
-                className={`bg-milk border ${error ? 'border-error' : 'border-gray-300'} text-night text-sm rounded-lg focus:ring-lazurite focus:border-lazurite block w-full p-2.5`}
+            <label htmlFor={name} className="block mb-2 text-sm font-medium text-night">
+                {label}
+            </label>
+            <input
+                type={type}
+                id={name}
+                name={name}
+                value={value}
+                placeholder={placeholder}
+                disabled={disabled}
+                onChange={onChange}
+                className={inputClassName}
+                required={required}
             />
-            {error && <p className="mt-2 text-sm text-error">Input error!</p>}
         </div>
-    )
+    );
 }
 
 export default Input

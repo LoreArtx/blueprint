@@ -14,7 +14,7 @@ const AuthOptions = ({ session }: { session: Session }) => {
         { title: 'Your Projects', href: '/projects', icon: faProjectDiagram },
         { title: 'Profile', href: '/profile', icon: faUser },
         { title: 'Settings', href: '/profile/settings', icon: faGear },
-        { title: 'Sign out', function: signOut, icon: faSignOut }
+        { title: 'Sign out', action: () => signOut(), icon: faSignOut, styles: "hover:bg-gradient-exit hover:text-white" }
     ]
     return (
         <DropdownMenu items={profileOptions}>

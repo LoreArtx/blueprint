@@ -3,12 +3,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
 
 interface MenuItem {
     title: string;
     href?: string;
     icon: any;
     action?: () => void;
+    styles?: string
 }
 
 interface DropdownMenuProps {
@@ -43,7 +45,10 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, children }) => {
             {isOpen && (
                 <ul className="absolute z-10 right-0 mt-2 w-48 bg-white text-night border rounded shadow-lg">
                     {items.map((item) => {
-                        return <li key={item.title} className="px-4 py-2 hover:bg-gray-200" onClick={() => setIsOpen(false)}>
+                        return <li key={item.title} className={twMerge("px-4 py-2",
+                            item.styles
+                                ? item.styles
+                                : "hover:bg-gray-200")} onClick={() => setIsOpen(false)}>
                             {item.href ? <Link href={item.href} className="flex items-center">
                                 <FontAwesomeIcon icon={item.icon} className="mr-2" />
                                 {item.title}

@@ -19,11 +19,11 @@ export default async function RootLayout({
   const session = await getServerSession(options)
   return (
     <html lang="en" className="h-full">
-      <body className="font-sans bg-milk h-full">
+      <body className="font-sans bg-milk h-full" suppressHydrationWarning={true}>
         <SessionProvider session={session}>
           <section className="flex flex-col min-h-full">
             <Navbar isLoginPage={true} />
-            <main className="relative flex-auto">
+            <main className="relative flex-auto text-night">
               {children}
             </main>
             <Footer />
