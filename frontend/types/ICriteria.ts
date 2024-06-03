@@ -7,6 +7,7 @@ interface ICriteria{
     teacherID: string;
     value: number;
     comments: IComment[];
+    isFinished:boolean;
 }
 
 export default ICriteria

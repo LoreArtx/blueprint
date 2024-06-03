@@ -12,6 +12,7 @@ type Criteria struct {
     Description string `json:"description" bson:"description"`
     TeacherID   string `json:"teacherId" bson:"teacherId"`
     Value       int    `json:"value" bson:"value"`
+    IsFinished  bool   `json:"isFinished" bson:"isFinished"`
     Comments    []Comment `json:"comments" bson:"comments"`
 }
 

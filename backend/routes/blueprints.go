@@ -101,6 +101,22 @@ func GetOneBlueprint(c *gin.Context) {
     }
 
     var blueprint models.Blueprint
+
+    err = BlueprintsCollection.FindOne(ctx, bson.M{"_id": objBlueprintID}).Decode(&blueprint)
+    if err != nil {
+        if err == mongo.ErrNoDocuments {
+            c.JSON(http.StatusNotFound, gin.H{"error": "Blueprint not found"})
+            return
+        }
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if blueprint.Privacy == "public" {
+        c.JSON(http.StatusOK, blueprint)
+        return
+    }
+
     filter := bson.M{
         "_id": objBlueprintID,
         "$or": []bson.M{
