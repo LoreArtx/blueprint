@@ -10,7 +10,7 @@ const usePostData = <T>(url: string): PostDataResult<T> => {
 
     const postData = async(body: any)=>{
         try {
-            const response = await fetch(url, {
+            const response = await fetch(process.env.NEXT_PUBLIC_SERVER_API_URL + url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
