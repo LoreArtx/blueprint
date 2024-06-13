@@ -1,17 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useForm = <T extends object>(initialValues: T) => {
   const [values, setValues] = useState<T>(initialValues);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+
     setValues({
       ...values,
-      [e.target.id]: e.target.value,
+      [e.target.name]: e.target.value,
     });
-
   };
-
-
 
   const setFormValues = (newValues: Partial<T>) => {
     setValues({
