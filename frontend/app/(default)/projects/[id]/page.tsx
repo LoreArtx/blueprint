@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client"
 
 import useFetchData from '@/hooks/useFetchData';
@@ -14,16 +15,17 @@ const ProjectPage = () => {
     const params = useParams()
     const session = useSession()
 
-    const { data: project, loading, error } = useFetchData<IBlueprint | null>(`http://localhost:5555/api/blueprints/${session.data?.user.dbID}/${params.id}`);
 
-    console.log(project)
+    const { data: project, error } = useFetchData<IBlueprint | null>(`/blueprints/${session.data?.user.dbID}/${params.id}`);
+    const amICreator = project?.creatorId === session.data?.user.dbID
+
 
     return (
-        project && <div className="container mx-auto p-4 grid grid-cols-12 grid-rows-4 gap-4">
-            <ProjectFiles title={project.title} deadline={project.deadline} />
-            <Description description={project.description} author={project.creatorID} />
-            <Progress criterias={project.criterias} progress={project.progress} />
-            <Criterias criterias={project.criterias} />
+        project && <div className="container mx-auto p-4 grid grid-cols-12 grid-rows-8 gap-4">
+            <div className='col-span-8 row-span-8'><ProjectFiles title={project.title} deadline={project.deadline} /></div>
+            <div className='col-span-4 row-span-1'><Description description={project.description} /></div>
+            <div className='col-span-4 row-span-1 '>{project.criterias.length > 0 && <Progress project={project} />}</div>
+            <div className='col-span-4 row-span-6'><Criterias project={project} moderate={amICreator} /></div>
         </div>
     );
 }

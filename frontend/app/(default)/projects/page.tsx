@@ -8,7 +8,7 @@ import React from 'react';
 const ProjectsListPage = () => {
     const session = useSession()
     //@ts-ignore
-    const { data, loading, error } = useFetchData<IBlueprint[] | null>("http://localhost:5555/api/blueprints/user/" + session.data?.user.id)
+    const { data, loading, error } = useFetchData<IBlueprint[] | null>("/blueprints/user/" + session.data?.user.id)
     if (loading) {
         return <div>Loading...</div>;
     }

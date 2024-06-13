@@ -2,7 +2,7 @@ import { User } from "next-auth"
 import { AdapterUser } from "next-auth/adapters"
 
 async function AddUser(user: AdapterUser|User){
-    const res = await fetch("http://localhost:5555/api/users/create", {
+    const res = await fetch("/users/create", {
         method:"POST",
         headers:{
           'Accept': 'application/json',

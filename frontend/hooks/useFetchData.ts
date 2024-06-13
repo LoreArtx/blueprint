@@ -11,10 +11,11 @@ const useFetchData = <T>(url:string) : FetchDataResult<T>=>{
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string|null>(null)
 
+
     useEffect(()=>{
         const fetchData = async()=>{
             try{
-                const response = await fetch(url)
+                const response = await fetch(process.env.NEXT_PUBLIC_SERVER_API_URL + url)
                 if (!response.ok)
                     throw new Error("Failed to fetch data!")
                 const fetchedData : T = await response.json()

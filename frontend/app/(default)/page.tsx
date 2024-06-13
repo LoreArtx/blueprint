@@ -7,7 +7,7 @@ import Link from 'next/link';
 import React from 'react';
 
 const Home = () => {
-  const { data, loading, error } = useFetchData<IBlueprint[] | null>("http://localhost:5555/api/blueprints");
+  const { data, loading, error } = useFetchData<IBlueprint[] | null>("/blueprints");
 
   return (
     <div className='flex-auto'>
