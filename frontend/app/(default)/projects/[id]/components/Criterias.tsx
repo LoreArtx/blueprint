@@ -1,35 +1,33 @@
 "use client"
 
 import ICriteria from '@/types/ICriteria';
-import React from 'react';
-import { twMerge } from 'tailwind-merge';
+import React, { useState } from 'react';
+import CriteriaForm from './AddCriteriaForm';
+import { Button, Modal } from '@/components/UI';
+import CriteriaList from './CriteriaList';
+import IBlueprint from '@/types/IBlueprint';
 
 interface CriteriasProps {
-    criterias: ICriteria[];
+    moderate: boolean
+    project: IBlueprint
+    handleChange: (newValues: IBlueprint) => void
 }
 
-const Criterias: React.FC<CriteriasProps> = ({ criterias }) => {
+const Criterias: React.FC<CriteriasProps> = ({ moderate, project }) => {
+
+    const [isOpen, setIsOpen] = useState<boolean>(false)
 
     return (
-        <div className="col-span-4 row-span-2 bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-4">Criterias</h2>
-            <div className="space-y-2">
-                {criterias.map(criteria => {
-                    const criteriaValueStyle = twMerge(
-                        "col-span-1 flex items-center justify-center text-[20px] rounded",
-                        criteria.isFinished ? "bg-success text-milk" : "border-night border-[1px]"
-                    )
-                    return <div key={criteria.id} className="p-2 bg-gray-100 rounded shadow grid grid-cols-6">
-                        <div className='col-span-5'>
-                            <h3 className="text-lg font-semibold">{criteria.title}</h3>
-                            <p>{criteria.description}</p>
-                        </div>
-
-                        <div className={criteriaValueStyle}>{criteria.value}</div>
-
-                    </div>
-                })}
+        <div className=" bg-white p-4 rounded shadow h-full">
+            <div className='grid grid-cols-12 gap-4 mb-4'>
+                <h2 className="text-xl font-semibold col-span-8">Criterias</h2>
+                {moderate && <div className='col-span-4'><Button onClick={() => setIsOpen(true)}>Add</Button></div>}
+                <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                    <CriteriaForm projectId={project.id} onClose={() => setIsOpen(false)}></CriteriaForm>
+                </Modal>
             </div>
+
+            <CriteriaList project={project} moderate={moderate} />
         </div>
     );
 };
