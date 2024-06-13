@@ -1,7 +1,7 @@
 import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
-const Loader = ({ styles }: { styles?: string }) => {
+const Loader: React.FC = ({ styles }: { styles?: string }) => {
     const loaderStyles = twMerge("flex justify-center items-center", styles ? styles : "")
     return (
         <div className={loaderStyles}>

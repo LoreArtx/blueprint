@@ -8,7 +8,7 @@ interface IBlueprint {
     description: string;
     criterias: ICriteria[];
     privacy: 'public' | 'private'; 
-    creatorID: string;
+    creatorId: string;
     isFinished: boolean;
     users: string[];
     createdAt: string;

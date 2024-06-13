@@ -13,7 +13,7 @@ const config: Config = {
         "milk":"#F0EDEE",
         "lazurite":"#6F00FF",
         "olive":"#1F272B",
-        "sea":"#90DDF0",
+        "sea":"#15f4ee",
         "error":"#FF4400",
         "info":"#FFAE00",
         "success":"#66BF3C",
