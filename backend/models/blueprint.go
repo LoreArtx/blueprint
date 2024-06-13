@@ -25,7 +25,6 @@ type Comment struct {
 type Blueprint struct {
     ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
     Title       string             `json:"title" bson:"title"`
-    Progress    int                `json:"progress" bson:"progress"`
     Deadline    time.Time          `json:"deadline" bson:"deadline"`
     Description string             `json:"description" bson:"description"`
     Criterias   []Criteria         `json:"criterias" bson:"criterias"`
@@ -34,5 +33,5 @@ type Blueprint struct {
     IsFinished  bool               `json:"isFinished" bson:"isFinished"`
     Users    []primitive.ObjectID  `json:"users" bson:"users"`
     CreatedAt   time.Time          `json:"createdAt" bson:"createdAt"`
-    FinishedAt  *time.Time         `json:"finishedAt,omitempty" bson:"finishedAt,omitempty"`
+    FinishedAt  time.Time          `json:"finishedAt" bson:"finishedAt"`
 }

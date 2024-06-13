@@ -23,18 +23,23 @@ func main() {
 	api := router.Group("api")
 
 	if api != nil{
+		// users
 		users := api.Group("users")
 		users.GET("", routes.GetAllUsers)
 		users.POST("create", routes.CreateUser)
 		// users.PUT("update", routes.UpdateUser)
 
 
+		// blueprints
 		blueprints := api.Group("blueprints")
 		blueprints.GET("", routes.GetAllBlueprints)
 		blueprints.GET("user/:userId", routes.GetBlueprintsWithUser)
 		blueprints.GET(":userId/:id", routes.GetOneBlueprint)
 		blueprints.POST("create", routes.CreateBlueprints)
-		blueprints.PUT("update", routes.UpdateBlueprint)
+		blueprints.PATCH("update", routes.UpdateBlueprint)
+		blueprints.PATCH("add/criteria", routes.AddCriteria)
+		blueprints.PATCH("remove/criteria", routes.RemoveCriteria)
+		blueprints.PATCH("update/criteria", routes.UpdateCriteria)
 	}
 
 	router.Run(":"+port)
