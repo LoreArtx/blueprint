@@ -2,7 +2,6 @@
 
 import ICriteria from '@/types/ICriteria';
 import React from 'react';
-import { compileString } from 'sass';
 
 interface ProgressProps {
     progress: number;
@@ -11,7 +10,7 @@ interface ProgressProps {
 
 const Progress: React.FC<ProgressProps> = ({ progress, criterias }) => {
 
-    const finishedPoints = criterias
+    const finishedPoints = criterias && criterias
         .filter(criteria => criteria.isFinished)
         .reduce((total, criteria) => total + criteria.value, 0);
     const totalProgress = progress > 0 ? (finishedPoints / progress) * 100 : 0;
@@ -36,6 +35,7 @@ const Progress: React.FC<ProgressProps> = ({ progress, criterias }) => {
                 <div style={{ width: `${totalProgress}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-success"></div>
             </div>
         </div>
+
     );
 };
 
