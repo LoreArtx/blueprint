@@ -1,24 +1,45 @@
 "use client"
 
+import usePatchData from '@/hooks/usePatchData';
+import IBlueprint from '@/types/IBlueprint';
 import ICriteria from '@/types/ICriteria';
 import React from 'react';
 
 interface ProgressProps {
-    progress: number;
-    criterias: ICriteria[];
+    project: IBlueprint
 }
 
-const Progress: React.FC<ProgressProps> = ({ progress, criterias }) => {
+const Progress: React.FC<ProgressProps> = ({ project }) => {
+
+    const criterias = project.criterias
 
     const finishedPoints = criterias && criterias
         .filter(criteria => criteria.isFinished)
         .reduce((total, criteria) => total + criteria.value, 0);
-    const totalProgress = progress > 0 ? (finishedPoints / progress) * 100 : 0;
 
-    console.log((finishedPoints / progress) * 100)
+    const progress = criterias.reduce((total, criteria) => total + criteria.value, 0)
+    const totalProgress = (finishedPoints / progress) * 100;
+
+
+
+    const { patchData } = usePatchData("/blueprints/update")
+
+    const handleFinish = async () => {
+        await patchData({ ID: project.id, isFinished: true, finishedAt: new Date() })
+    }
+    const handleOpen = async () => {
+        await patchData({ ID: project.id, isFinished: false, finishedAt: null })
+    }
+
+    if (totalProgress === 100 && !project.isFinished)
+        handleFinish()
+    else if (totalProgress < 100 && project.isFinished) {
+        handleOpen()
+    }
+
 
     return (
-        <div className="col-span-4 row-span-1 bg-white p-4 rounded shadow">
+        <div className="bg-white p-4 rounded shadow h-full">
             <div className="flex mb-2 items-center justify-between">
                 <div>
                     <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-success bg-success/20">

@@ -3,7 +3,6 @@ import ICriteria from "./ICriteria";
 interface IBlueprint {
     id: string;
     title: string;
-    progress: number;
     deadline: string; 
     description: string;
     criterias: ICriteria[];
