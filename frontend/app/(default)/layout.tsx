@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import "../globals.scss";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { options } from "../api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth";
-import SessionProvider from "@/components/Providers/SessionProvider";
+import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +14,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(options)
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" suppressHydrationWarning={true}>
       <body className="font-sans bg-milk h-full" >
-        <SessionProvider session={session}>
+        <Providers>
           <section className="flex flex-col min-h-full">
             <Navbar />
             <main className="relative flex-auto mx-[150px] my-[20px] text-night">
@@ -28,7 +25,7 @@ export default async function RootLayout({
             </main>
             <Footer />
           </section>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
