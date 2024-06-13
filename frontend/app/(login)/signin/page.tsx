@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { signInByGithub } from '../utils/signin'
+import { signInByGithub } from '../../utils/signin'
 import { useSearchParams } from 'next/navigation'
 import Button from '@/components/UI/Button'
 import Input from '@/components/UI/Input'
