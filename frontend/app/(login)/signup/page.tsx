@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Input from '@/components/UI/Input'
 import Button from '@/components/UI/Button'
-import { signInByGithub } from '../utils/signin'
+import { signInByGithub } from '../../utils/signin'
 
 const SignUpPage = () => {
 
