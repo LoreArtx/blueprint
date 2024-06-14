@@ -15,7 +15,7 @@ const RepositoryInfo = () => {
         }
     };
     return (
-        <div className="bg-white p-4 rounded shadow">
+        <div className="bg-white p-4 rounded shadow-lg">
             <div className="flex items-center mb-4">
                 <img src={repository.owner.avatar_url} alt={repository.owner.login} className="w-12 h-12 rounded-full mr-4" />
                 <div>
