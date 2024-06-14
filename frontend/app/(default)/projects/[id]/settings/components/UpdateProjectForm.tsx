@@ -1,3 +1,4 @@
+"use client"
 
 import useForm from '@/hooks/useForm';
 import { showToast } from '@/app/utils/showToast';
@@ -5,13 +6,13 @@ import { Button, Input, Select, Textarea } from '@/components/UI';
 import React from 'react'
 import IBlueprint from '@/types/IBlueprint';
 import usePatchData from '@/hooks/usePatchData';
+import { useProject } from '@/components/Providers/ProjectProvider';
 
-interface UpdateProjectFormProps {
-    project: IBlueprint
-}
 
-const UpdateProjectForm: React.FC<UpdateProjectFormProps> = ({ project }) => {
-    const { values, handleChange, setFormValues } = useForm(project);
+
+const UpdateProjectForm: React.FC = () => {
+    const { project } = useProject()
+    const { values, handleChange } = useForm(project);
     const { title, deadline, description, privacy } = values;
     const { error, patchData } = usePatchData<IBlueprint>('/blueprints/update');
     // const { data: session } = useSession()

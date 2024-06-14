@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from '@/components/UI'
-import { faArrowAltCircleLeft, faBackspace } from '@fortawesome/free-solid-svg-icons'
+import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { twMerge } from 'tailwind-merge'
 import Link from 'next/link'

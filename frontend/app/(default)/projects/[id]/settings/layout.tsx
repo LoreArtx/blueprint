@@ -1,22 +1,15 @@
-//@ts-nocheck
-
+"use client"
 import { PropsWithChildren } from 'react';
 import Tabs from './components/Tabs';
-import { getServerSession } from 'next-auth';
-import { options } from '@/app/api/auth/[...nextauth]/options';
-import asyncFetchData from '@/app/utils/asyncFetchData';
-import { redirect } from 'next/navigation';
-import IBlueprint from '@/types/IBlueprint';
+import { useRouter } from 'next/navigation';
+import { useProject } from '@/components/Providers/ProjectProvider';
 
-interface SettingsPageLayoutProps {
-    params: { id: string };
-}
 
-const SettingsPageLayout = async ({ children, params }: PropsWithChildren<SettingsPageLayoutProps>) => {
-    const session = await getServerSession(options);
-    const data = await asyncFetchData<IBlueprint>(`/blueprints/${session.user.dbID}/${params.id}`);
-    if (!data || data.creatorId !== session?.user.dbID) {
-        redirect('http://localhost:3000/');
+const SettingsPageLayout = ({ children }: PropsWithChildren) => {
+    const { project, amICreator } = useProject()
+    const router = useRouter()
+    if (!project || !amICreator) {
+        router.push('/');
     }
 
     return (
