@@ -1,18 +1,13 @@
 "use client"
 
+import { useProject } from '@/components/Providers/ProjectProvider';
 import usePatchData from '@/hooks/usePatchData';
-import IBlueprint from '@/types/IBlueprint';
-import ICriteria from '@/types/ICriteria';
 import React from 'react';
 
-interface ProgressProps {
-    project: IBlueprint
-}
+const Progress: React.FC = () => {
 
-const Progress: React.FC<ProgressProps> = ({ project }) => {
-
+    const { project } = useProject()
     const criterias = project.criterias
-
     const finishedPoints = criterias && criterias
         .filter(criteria => criteria.isFinished)
         .reduce((total, criteria) => total + criteria.value, 0);
@@ -37,9 +32,8 @@ const Progress: React.FC<ProgressProps> = ({ project }) => {
         handleOpen()
     }
 
-
-    return (
-        <div className="bg-white p-4 rounded shadow h-full">
+    if (criterias.length > 0)
+        return <>
             <div className="flex mb-2 items-center justify-between">
                 <div>
                     <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-success bg-success/20">
@@ -54,10 +48,9 @@ const Progress: React.FC<ProgressProps> = ({ project }) => {
             </div>
             <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-success/20">
                 <div style={{ width: `${totalProgress}%` }} className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-success"></div>
-            </div>
-        </div>
-
-    );
+            </div></>
+    else
+        return <div className='flex justify-center items-center h-full font-bold'>Progress is not available</div>
 };
 
 export default Progress;
