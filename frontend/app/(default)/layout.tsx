@@ -3,6 +3,17 @@ import "../globals.scss";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
+import React from "react";
+
+import { Abel } from "next/font/google"
+const abel = Abel({
+  weight: '400',
+  subsets: ['latin'],
+})
+
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import { config } from '@fortawesome/fontawesome-svg-core';
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,12 +26,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning={true}>
-      <body className="font-sans bg-milk h-full" >
+    <html lang="en" className="h-full">
+      <body className={`font-sans bg-milk h-full ${abel.className}`} suppressHydrationWarning={true}>
         <Providers>
           <section className="flex flex-col min-h-full">
             <Navbar />
-            <main className="relative flex-auto mx-[150px] my-[20px] text-night">
+            <main className="relative flex-auto mx-[150px] my-[20px] text-night flex">
               {children}
             </main>
             <Footer />
