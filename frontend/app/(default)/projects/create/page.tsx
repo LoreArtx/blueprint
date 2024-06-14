@@ -19,7 +19,7 @@ const CreateProjectPage: React.FC = () => {
 
     const { values, handleChange, setFormValues } = useForm(initialValues);
     const { title, deadline, description, privacy } = values;
-    const { error, postData } = usePostData<IBlueprint>('http://localhost:5555/api/blueprints/create');
+    const { error, postData } = usePostData<IBlueprint>('/blueprints/create');
     const { data: session } = useSession()
 
     const handleSubmit = async (e: any) => {
@@ -39,13 +39,13 @@ const CreateProjectPage: React.FC = () => {
 
         values.deadline = new Date(deadline).toISOString()
         //@ts-ignore
-        await postData({ ...values, creatorID: session?.user.dbID })
+        await postData({ ...values, creatorID: session?.user.dbID, criterias: [] })
 
         showToast("success", "You did it!")
     }
 
     return (
-        <div className="container mx-auto p-4 pt-[80px]">
+        <div className="container mx-auto p-4 pt-[60px]">
             <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-2">
                 <div className='col-span-8 p-2'>
                     <Input
@@ -62,7 +62,7 @@ const CreateProjectPage: React.FC = () => {
                         value={description}
                         onChange={handleChange}
                         required />
-                    <div className='grid grid-cols-2'>
+                    <div className='grid grid-cols-2 gap-4'>
                         <Input
                             type="date"
                             name='deadline'
@@ -75,7 +75,7 @@ const CreateProjectPage: React.FC = () => {
                         <Select
                             label="Privacy"
                             value={privacy}
-                            id="privacy"
+                            name="privacy"
                             onChange={handleChange}
                             options={[
                                 { value: 'public', label: 'Public' },
@@ -84,8 +84,8 @@ const CreateProjectPage: React.FC = () => {
                         />
                     </div>
                 </div>
-                <div className='col-span-4 row-span-2 bg-white rounded shadow flex justify-center items-center'>
-                    <h1 className="text-2xl font-bold mb-4">Create New Project</h1>
+                <div className='col-span-4 row-span-2 bg-white rounded shadow-lg border flex justify-center items-center'>
+                    <h1 className="text-2xl font-bold">Create New Project</h1>
                 </div>
                 <div className='col-span-8 row-start-2'>
                     <Button type="submit">Create Project</Button>

@@ -34,7 +34,7 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="grid grid-cols-12 mt-[45px]">
+        <div className="grid grid-cols-12 mt-[45px] flex-auto">
             <div className="col-start-1 col-end-2">
                 <div className='absolute flex justify-center items-center w-[307px] h-[307px] rounded-full bg-gradient-lazurite'>
                     <Image src={user.image} width={300} height={300} className="rounded-full" alt="Profile Image" />

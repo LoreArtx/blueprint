@@ -21,4 +21,4 @@ export default async function middleware(req: NextRequest, event: NextFetchEvent
   return authMiddleware(req, event);
 }
 
-export const config = {matcher:["/projects", "/projects/create", "/profile/:path*"]}
+export const config = {matcher:["/projects", "/projects/create", "/profile/:path*", "/projects/:path*/settings"]}
