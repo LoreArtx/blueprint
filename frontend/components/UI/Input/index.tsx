@@ -30,7 +30,7 @@ const Input: FC<InputProps> = ({
 }) => {
 
     const inputClassName = twMerge(
-        'bg-white border text-night text-sm rounded-lg focus:ring-lazurite focus:border-lazurite block w-full p-2.5',
+        'bg-white border text-night text-[15px] rounded-lg focus:ring-lazurite focus:border-lazurite block w-full p-2.5',
         error ? 'border-error' : 'border-gray-300',
         disabled && 'bg-disabled cursor-not-allowed',
         styles ? styles : "",
@@ -38,8 +38,8 @@ const Input: FC<InputProps> = ({
 
 
     return (
-        <div>
-            <label htmlFor={name} className="block mb-2 text-sm font-medium text-night">
+        <div className="mb-3">
+            <label htmlFor={name} className="block mb-2 text-[15px] font-bold text-night">
                 {label}
             </label>
             <input
