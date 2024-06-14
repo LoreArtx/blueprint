@@ -6,15 +6,18 @@ import { Button, Input, Textarea } from '@/components/UI'
 import useForm from '@/hooks/useForm'
 import usePatchData from '@/hooks/usePatchData'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { useProject } from '@/components/Providers/ProjectProvider'
+
 
 interface CriteriaFormProps {
     onClose: () => void,
-    projectId: string,
 }
 
-const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose, projectId }) => {
+const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
+    const { project } = useProject()
     const initialValues = {
         title: '',
         description: '',
@@ -35,7 +38,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose, projectId }) => {
 
         values.value = parseInt(value)
 
-        await patchData({ ...values, creatorId: session?.user.dbID, iD: projectId, isFinished: false })
+        await patchData({ ...values, creatorId: session?.user.dbID, iD: project.id, isFinished: false })
         if (error) {
             showToast("error", error)
             return
@@ -46,7 +49,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose, projectId }) => {
 
     return (
         <div className='w-[300px] rounded-lg px-4 py-3 bg-milk relative'>
-            <div className='absolute w-[20px] h-[20px] right-[5px] top-[7px] border border-night bg-milk flex justify-center items-center cursor-pointer hover:bg-white transition-all rounded' onClick={onClose}>X</div>
+            <div className='absolute w-[20px] h-[20px] right-[5px] top-[7px] border border-night bg-milk flex justify-center items-center cursor-pointer hover:bg-white transition-all rounded' onClick={onClose}><FontAwesomeIcon icon={faClose} /></div>
             <form onSubmit={handleSubmit}>
                 <Input
                     type="text"

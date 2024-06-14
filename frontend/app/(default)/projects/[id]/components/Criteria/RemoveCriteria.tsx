@@ -11,7 +11,7 @@ interface RemoveCriteriaProps {
 }
 
 const RemoveCriteria: React.FC<RemoveCriteriaProps> = ({ projectId, criteriaId }) => {
-    const { error, patchData } = usePatchData("/blueprints/remove/criteria")
+    const { patchData } = usePatchData("/blueprints/remove/criteria")
 
 
     const handleRemove = async () => {
