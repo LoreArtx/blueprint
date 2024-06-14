@@ -28,8 +28,6 @@ const usePatchData = <T>(url: string): PatchDataResult<T> => {
                 throw new Error('Failed to patch data!');
             }
 
-            window.location.reload();
-
         } catch (error: any) {
             setError(error.message || 'An error occurred');
         }
