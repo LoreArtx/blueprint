@@ -8,7 +8,7 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({ children, onClick, type = "button", styles }) => {
-    const buttonStyle = twMerge("w-full text-white bg-lazurite hover:bg-lazurite/70 focus:ring-4 focus:outline-none focus:lazurite font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all flex justify-center items-center",
+    const buttonStyle = twMerge("w-full text-white bg-lazurite hover:bg-lazurite/70 focus:ring-4 focus:outline-none focus:lazurite rounded-lg text-[15px] px-5 py-2.5 text-center transition-all flex justify-center items-center",
         styles ? styles : ""
     )
     return (
