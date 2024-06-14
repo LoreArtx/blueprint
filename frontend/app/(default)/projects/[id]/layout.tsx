@@ -1,5 +1,4 @@
 //@ts-nocheck
-
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import asyncFetchData from '@/app/utils/asyncFetchData';
 import { ProjectProvider } from '@/components/Providers/ProjectProvider';
@@ -14,12 +13,13 @@ interface ProjectPageLayoutProps {
 
 const ProjectPageLayout = async ({ children, params }: PropsWithChildren<ProjectPageLayoutProps>) => {
     const session = await getServerSession(options);
-    const data = await asyncFetchData<IBlueprint>(`/blueprints/${session.user.dbID}/${params.id}`);
+
+    const data = await asyncFetchData<IBlueprint>(`/blueprints/${session && session.user.dbID}/${params.id}`);
     if (!data) {
         redirect('/');
     }
 
-    return <ProjectProvider project={data} amICreator={data.creatorId === session.user.dbID}>
+    return <ProjectProvider project={data} amICreator={session ? data.creatorId === session.user.dbID : false}>
         {children}
     </ProjectProvider>;
 };
