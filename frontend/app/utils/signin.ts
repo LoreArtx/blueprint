@@ -3,6 +3,7 @@ import { signIn } from "next-auth/react"
 
 const signInByGithub = async ({callbackUrl}:{callbackUrl:string|undefined})=>{
     let redirectURL = null
+
     try{
         redirectURL = await signIn("github" satisfies OAuthProviderType,{callbackUrl})
         if(!redirectURL){

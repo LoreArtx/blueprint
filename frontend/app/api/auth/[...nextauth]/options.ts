@@ -12,12 +12,6 @@ export const options : NextAuthOptions = {
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks:{
-    // async signIn({user}) {
-    //   // console.log(user,account)
-    //   // const dbUser = await AddUser(user)
-    //   // user.id = dbUser.id;
-    //   // return !!dbUser
-    // },
     async jwt({token, user}){
       if(user)
       {
@@ -26,8 +20,9 @@ export const options : NextAuthOptions = {
       }
       return token
     },
-    async session({token, session, user}){
+    async session({token, session}){
         if(token)
+          //@ts-ignore
             session.user.dbID = token.dbID
           
       return session
