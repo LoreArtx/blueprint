@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 
-interface PostDataResult<T> {
+interface PostDataResult {
     error: string | null;
+    // eslint-disable-next-line no-unused-vars
     postData: (body:any)=>Promise<void>
 }
 
-const usePostData = <T>(url: string): PostDataResult<T> => {
+const usePostData = (url: string): PostDataResult => {
     const [error, setError] = useState<string | null>(null);
 
     const postData = async(body: any)=>{
