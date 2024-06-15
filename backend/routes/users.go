@@ -6,11 +6,14 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var UsersCollection *mongo.Collection = OpenCollection(Client, os.Getenv("USERS_COLLECTION_NAME"))
@@ -44,6 +47,50 @@ func GetAllUsers(c *gin.Context) {
     }
 
     c.JSON(http.StatusOK, publicUsers)
+}
+
+func UpdateUser(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+    defer cancel()
+
+    var reqData models.User
+    if err := c.ShouldBindJSON(&reqData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    id := reqData.ID
+
+    reqData.ID = primitive.NilObjectID
+
+    update := bson.M{}
+    val := reflect.ValueOf(reqData)
+    typ := reflect.TypeOf(reqData)
+    for i := 0; i < val.NumField(); i++ {
+        field := val.Field(i)
+        fieldName := typ.Field(i).Tag.Get("bson")
+        if fieldName == "" {
+            fieldName = typ.Field(i).Name
+        }
+        if field.Kind() == reflect.Bool {
+            update[fieldName] = field.Interface()
+        } else if !field.IsZero() && fieldName != "_id" {
+            update[fieldName] = field.Interface()
+        }
+    }
+
+    if len(update) == 0 {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "No fields to update"})
+        return
+    }
+
+
+    _, err := UsersCollection.UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": update}, options.Update().SetUpsert(false))
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": bson.M{"$set": update}})
 }
 
 // func GetUserByEmail(c *gin.Context) {

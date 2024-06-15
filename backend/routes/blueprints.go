@@ -89,6 +89,38 @@ func CreateBlueprints(c *gin.Context) {
     c.JSON(http.StatusCreated, gin.H{"message": "Blueprint created successfully"})
 }
 
+func DeleteBlueprint(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+    defer cancel()
+
+    var reqData models.Blueprint
+    if err := c.ShouldBindJSON(&reqData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    objBlueprintID := reqData.ID
+    if objBlueprintID.IsZero() {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Blueprint ID"})
+        return
+    }
+
+    filter := bson.M{"_id": objBlueprintID}
+
+    result, err := BlueprintsCollection.DeleteOne(ctx, filter)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if result.DeletedCount == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"error": "Blueprint not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "Blueprint deleted successfully"})
+}
+
 func GetOneBlueprint(c *gin.Context) {
     var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
     defer cancel()
@@ -312,4 +344,8 @@ func UpdateCriteria(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "Criteria updated successfully"})
 }
+
+
+
+
 
