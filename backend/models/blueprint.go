@@ -10,7 +10,8 @@ type Criteria struct {
     ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
     Title       string `json:"title" bson:"title"`
     Description string `json:"description" bson:"description"`
-    TeacherID   string `json:"teacherId" bson:"teacherId"`
+    CreatorEmail      string `json:"creatorEmail" bson:"creatorEmail"`
+    StudentEmail string `json:"studentEmail" bson:"studentEmail"`
     Value       int    `json:"value" bson:"value"`
     IsFinished  bool   `json:"isFinished" bson:"isFinished"`
     Comments    []Comment `json:"comments" bson:"comments"`
@@ -29,9 +30,9 @@ type Blueprint struct {
     Description string             `json:"description" bson:"description"`
     Criterias   []Criteria         `json:"criterias" bson:"criterias"`
     Privacy     string             `json:"privacy" bson:"privacy" validate:"oneof=public private"`
-    CreatorID   primitive.ObjectID `json:"creatorId" bson:"creatorId"`
+    CreatorEmail string           `json:"creatorEmail" bson:"creatorEmail"`
     IsFinished  bool               `json:"isFinished" bson:"isFinished"`
-    Users    []primitive.ObjectID  `json:"users" bson:"users"`
+    Users       []string           `json:"users" bson:"users"`
     CreatedAt   time.Time          `json:"createdAt" bson:"createdAt"`
     FinishedAt  time.Time          `json:"finishedAt" bson:"finishedAt"`
 }

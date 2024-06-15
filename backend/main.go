@@ -34,7 +34,7 @@ func main() {
 		blueprints := api.Group("blueprints")
 		blueprints.GET("", routes.GetAllBlueprints)
 		blueprints.GET("user/:userId", routes.GetBlueprintsWithUser)
-		blueprints.GET(":userId/:id", routes.GetOneBlueprint)
+		blueprints.GET(":userEmail/:id", routes.GetOneBlueprint)
 		blueprints.POST("create", routes.CreateBlueprints)
 		blueprints.PATCH("update", routes.UpdateBlueprint)
 		blueprints.PATCH("add/criteria", routes.AddCriteria)
