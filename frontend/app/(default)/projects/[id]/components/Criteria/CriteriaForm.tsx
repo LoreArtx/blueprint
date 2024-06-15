@@ -10,6 +10,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose } from '@fortawesome/free-solid-svg-icons'
 import { useProject } from '@/components/Providers/ProjectProvider'
+import ICriteria from '@/types/ICriteria'
 
 
 interface CriteriaFormProps {
@@ -17,7 +18,7 @@ interface CriteriaFormProps {
 }
 
 const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
-    const { project } = useProject()
+    const { project, updateProject } = useProject()
     const initialValues = {
         title: '',
         description: '',
@@ -38,13 +39,16 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
 
         values.value = parseInt(value)
 
-        await patchData({ ...values, creatorId: session?.user.dbID, iD: project.id, isFinished: false })
+        const newCriteria: ICriteria = { ...values, creatorEmail: session?.user.email, iD: project.id, isFinished: false, studentEmail: "fatherpother@gmail.com" }
+
+        await patchData(newCriteria)
         if (error) {
             showToast("error", error)
             return
         }
         showToast("success", "Successfully added criteria")
         onClose()
+        updateProject({ ...project, criterias: [...project.criterias, newCriteria] })
     }
 
     return (

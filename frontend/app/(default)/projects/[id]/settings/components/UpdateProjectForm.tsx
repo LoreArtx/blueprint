@@ -7,15 +7,18 @@ import React from 'react'
 import IBlueprint from '@/types/IBlueprint';
 import usePatchData from '@/hooks/usePatchData';
 import { useProject } from '@/components/Providers/ProjectProvider';
+import { usePathname, useRouter } from 'next/navigation';
 
 
 
 const UpdateProjectForm: React.FC = () => {
-    const { project } = useProject()
+    const { project, updateProject } = useProject()
     const { values, handleChange } = useForm(project);
     const { title, deadline, description, privacy } = values;
-    const { error, patchData } = usePatchData<IBlueprint>('/blueprints/update');
-    // const { data: session } = useSession()
+    const { patchData } = usePatchData<IBlueprint>('/blueprints/update');
+    const router = useRouter()
+    const pathName = usePathname()
+    const backURL = pathName.split("/settings")[0]
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -30,9 +33,11 @@ const UpdateProjectForm: React.FC = () => {
         }
         values.deadline = new Date(deadline).toISOString()
         //@ts-ignore
-        await postData({ ...values, creatorID: session?.user.dbID, criterias: [] })
-
+        await patchData({ ...values })
+        const newProject: IBlueprint = { ...project, ...values, }
+        updateProject(newProject)
         showToast("success", "You did it!")
+        router.push(backURL)
     }
 
     return (
