@@ -7,13 +7,13 @@ import (
 )
 
 type User struct {
-    ID        primitive.ObjectID `bson:"_id,omitempty"`
-    Name      string             `bson:"name"`
-    Email     string             `bson:"email"`
-    Password  string             `bson:"password,omitempty"`
-    GitHubID  string              `bson:"githubId,omitempty"`
-    Image     string             `bson:"image,omitempty"`
-    CreatedAt time.Time          `bson:"createdAt"`
+    ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+    Name      string             `json:"name" bson:"name"`
+    Email     string             `json:"email" bson:"email"`
+    Password  string             `json:"password" bson:"password,omitempty"`
+    GitHubID  string             `json:"githubId" bson:"githubId,omitempty"`
+    Image     string             `json:"image" bson:"image,omitempty"`
+    CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
 }
 
 type CreateUserRequestBody struct {
@@ -21,4 +21,13 @@ type CreateUserRequestBody struct {
     Name            string `json:"name"`
     Email           string `json:"email"`
     Image           string `json:"image"`
+}
+
+type PublicUser struct {
+    ID        primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+    Name      string             `json:"name" bson:"name"`
+    Email     string             `json:"email" bson:"email"`
+    GitHubID  string             `json:"githubId,omitempty" bson:"githubId,omitempty"`
+    Image     string             `json:"image,omitempty" bson:"image,omitempty"`
+    CreatedAt time.Time          `json:"createdAt" bson:"createdAt"`
 }

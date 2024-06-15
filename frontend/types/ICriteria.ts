@@ -4,7 +4,8 @@ interface ICriteria{
     id: string;
     title: string;
     description: string;
-    teacherID: string;
+    creatorEmail: string;
+    userEmail:string;
     value: number;
     comments: IComment[];
     isFinished:boolean;

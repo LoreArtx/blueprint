@@ -15,25 +15,35 @@ import (
 
 var UsersCollection *mongo.Collection = OpenCollection(Client, os.Getenv("USERS_COLLECTION_NAME"))
 
-func GetAllUsers(c *gin.Context){
-	var ctx, cancel = context.WithTimeout(context.Background(),DefaultTimeout)
-	var users []models.User
+func GetAllUsers(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+    defer cancel()
 
-	cursor, err := UsersCollection.Find(ctx, bson.M{})
-	if err != nil{
-		defer cancel()
-		c.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
-		return
-	}
+    var users []models.User
+    cursor, err := UsersCollection.Find(ctx, bson.M{})
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
 
-	if err:= cursor.All(ctx, &users);err!=nil{
-		defer cancel()
-		c.JSON(http.StatusInternalServerError, gin.H{"error":err.Error()})
-		return
-	}
+    if err := cursor.All(ctx, &users); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
 
-	defer cancel()
-	c.JSON(http.StatusOK,users)
+    publicUsers := make([]models.PublicUser, len(users))
+    for i, user := range users {
+        publicUsers[i] = models.PublicUser{
+            ID:        user.ID,
+            Name:      user.Name,
+            Email:     user.Email,
+            GitHubID:  user.GitHubID,
+            Image:     user.Image,
+            CreatedAt: user.CreatedAt,
+        }
+    }
+
+    c.JSON(http.StatusOK, publicUsers)
 }
 
 // func GetUserByEmail(c *gin.Context) {

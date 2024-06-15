@@ -43,12 +43,12 @@ func GetBlueprintsWithUser(c *gin.Context) {
  var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
     defer cancel()
 
-    userID := c.Param("userId")
+    userEmail := c.Param("userEmail")
 
     filter := bson.M{
         "$or": []bson.M{
-            {"creatorId": userID},
-            {"teachers": userID},
+            {"creatorEmail": userEmail},
+            {"users": userEmail},
         },
     }
 
@@ -94,7 +94,7 @@ func GetOneBlueprint(c *gin.Context) {
     defer cancel()
 
     blueprintID := c.Param("id")
-    userID := c.Param("userId")
+    userEmail := c.Param("userEmail")
 
     objBlueprintID, err := primitive.ObjectIDFromHex(blueprintID)
     if err != nil {
@@ -122,8 +122,8 @@ func GetOneBlueprint(c *gin.Context) {
     filter := bson.M{
         "_id": objBlueprintID,
         "$or": []bson.M{
-            {"creatorId": userID},
-            {"users": userID},
+            {"creatorEmail": userEmail},
+            {"users": userEmail},
         },
     }
 
@@ -194,7 +194,8 @@ func AddCriteria(c *gin.Context) {
         Title       string              `json:"Title"`
         Description string              `json:"Description"`
         Value       int                 `json:"Value"`
-        TeacherID   string              `json:"CreatorId"`
+        CreatorEmail   string           `json:"CreatorEmail"`
+        StudentEmail   string           `json:"StudentEmail"`
         IsFinished  bool                `json:"IsFinished"`
     }
 
@@ -207,7 +208,8 @@ func AddCriteria(c *gin.Context) {
         ID:          primitive.NewObjectID(),
         Title:       reqData.Title,
         Description: reqData.Description,
-        TeacherID:   reqData.TeacherID,
+        CreatorEmail:reqData.CreatorEmail,
+        StudentEmail: reqData.StudentEmail,
         Value:       reqData.Value,
         IsFinished:  reqData.IsFinished,
     }
