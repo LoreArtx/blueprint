@@ -2,7 +2,7 @@
 //use client
 
 import { showToast } from '@/app/utils/showToast'
-import { Button, Input, Textarea } from '@/components/UI'
+import { Button, Input, Textarea, Select } from '@/components/UI'
 import useForm from '@/hooks/useForm'
 import usePatchData from '@/hooks/usePatchData'
 import { useSession } from 'next-auth/react'
@@ -22,12 +22,13 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
     const initialValues = {
         title: '',
         description: '',
-        value: 0
+        value: 0,
+        user: 'all'
     }
 
     const { values, handleChange } = useForm(initialValues)
     const { data: session } = useSession()
-    const { title, description, value } = values
+    const { title, description, value, user } = values
     const { error, patchData } = usePatchData(`/blueprints/add/criteria`)
 
     const handleSubmit = async (e: any) => {
@@ -39,7 +40,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
 
         values.value = parseInt(value)
 
-        const newCriteria: ICriteria = { ...values, creatorEmail: session?.user.email, iD: project.id, isFinished: false, studentEmail: "fatherpother@gmail.com" }
+        const newCriteria: ICriteria = { ...values, creatorEmail: session?.user.email, iD: project.id, isFinished: false, studentEmail: user }
 
         await patchData(newCriteria)
         if (error) {
@@ -76,6 +77,17 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ onClose }) => {
                     placeholder=''
                     value={value}
                     onChange={handleChange} />
+
+                <Select
+                    label="To Whom"
+                    value={user}
+                    name="user"
+                    onChange={handleChange}
+                    options={[
+                        { value: 'all', label: 'All' },
+                        ...project.users.map(u => ({ value: u, label: u }))
+                    ]}
+                />
 
                 <div className='mt-4'>
                     <Button type='submit'>Submit</Button>

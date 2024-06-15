@@ -1,12 +1,12 @@
 "use client"
 
-import { Button } from '@/components/UI'
 import { faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { twMerge } from 'tailwind-merge'
 import Link from 'next/link'
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import RemoveProjectButton from './RemoveProjectButton'
 
 const Tabs = () => {
 
@@ -39,7 +39,7 @@ const Tabs = () => {
                         return <Link href={location + tab.href} key={tab.title} className={styles}>
                             {tab.title}</Link>
                     })}
-                    <Button styles='bg-error hover:bg-error/70 hover:text-white transition-all h-full rounded-none border-r-2 w-[150px]'>Remove Project</Button>
+                    <RemoveProjectButton />
                 </div>
                 <h2 className='flex justify-center items-center mr-8 text-[30px]'>Settings</h2>
             </div>
