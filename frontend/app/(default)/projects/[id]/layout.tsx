@@ -14,12 +14,12 @@ interface ProjectPageLayoutProps {
 const ProjectPageLayout = async ({ children, params }: PropsWithChildren<ProjectPageLayoutProps>) => {
     const session = await getServerSession(options);
 
-    const data = await asyncFetchData<IBlueprint>(`/blueprints/${session && session.user.dbID}/${params.id}`);
+    const data = await asyncFetchData<IBlueprint>(`/blueprints/${session && session.user.email}/${params.id}`);
     if (!data) {
         redirect('/');
     }
 
-    return <ProjectProvider project={data} amICreator={session ? data.creatorId === session.user.dbID : false}>
+    return <ProjectProvider project={data} amICreator={session ? data.creatorEmail === session.user?.email : false}>
         {children}
     </ProjectProvider>;
 };

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
-interface PatchDataResult<T> {
+interface PatchDataResult {
     error: string | null;
+    // eslint-disable-next-line no-unused-vars
     patchData: (body: any) => Promise<void>;
 }
 
-const usePatchData = <T>(url: string): PatchDataResult<T> => {
+const usePatchData = (url: string): PatchDataResult => {
     const [error, setError] = useState<string | null>(null);
 
     const patchData = async (body: any) => {

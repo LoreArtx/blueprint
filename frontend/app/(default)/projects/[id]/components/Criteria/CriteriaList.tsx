@@ -29,8 +29,8 @@ const CriteriaList: React.FC = () => {
                     </div>
                     {
                         amICreator && <div className='flex flex-col gap-2 items-center ml-4'>
-                            <RemoveCriteria projectId={project.id} criteriaId={criteria.id} />
-                            <EditCriteria isFinished={criteria.isFinished} projectId={project.id} criteriaId={criteria.id} />
+                            <RemoveCriteria criteria={criteria} />
+                            <EditCriteria criteria={criteria} />
                         </div>}
 
                 </div>
