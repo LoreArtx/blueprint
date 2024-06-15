@@ -20,7 +20,6 @@ const EditCriteria: React.FC<EditCriteriaProps> = ({ criteria }) => {
         await patchData({ blueprintID: project.id, criteriaID: criteria.id, isFinished: updatedStatus });
         if (error) {
             showToast('error', error);
-            console.log("error")
         } else {
             showToast('success', updatedStatus ? 'Checked' : 'Unchecked');
             const newCriteriasList = project.criterias.map(c =>
