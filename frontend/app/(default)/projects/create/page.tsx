@@ -4,9 +4,9 @@ import React from 'react';
 import useForm from '@/hooks/useForm';
 import { showToast } from '@/app/utils/showToast';
 import usePostData from '@/hooks/usePostData';
-import IBlueprint from '@/types/IBlueprint';
 import { useSession } from 'next-auth/react';
 import { Button, Input, Select, Textarea } from '@/components/UI';
+import { useRouter } from 'next/navigation';
 
 const CreateProjectPage: React.FC = () => {
     const initialValues = {
@@ -18,8 +18,9 @@ const CreateProjectPage: React.FC = () => {
 
     const { values, handleChange } = useForm(initialValues);
     const { title, deadline, description, privacy } = values;
-    const { error, postData } = usePostData<IBlueprint>('/blueprints/create');
+    const { error, postData } = usePostData('/blueprints/create');
     const { data: session } = useSession()
+    const router = useRouter()
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -33,14 +34,15 @@ const CreateProjectPage: React.FC = () => {
             return
         }
 
+        values.deadline = new Date(deadline).toISOString()
+        //@ts-ignore
+        await postData({ ...values, creatorEmail: session?.user.email, criterias: [], users: [] })
+
         if (error)
             showToast("error", error)
 
-        values.deadline = new Date(deadline).toISOString()
-        //@ts-ignore
-        await postData({ ...values, creatorID: session?.user.dbID, criterias: [], users: [] })
-
         showToast("success", "You did it!")
+        router.push("/")
     }
 
     return (

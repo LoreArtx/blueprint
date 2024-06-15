@@ -13,6 +13,7 @@ interface InputProps {
     disabled?: boolean
     required?: boolean
     styles?: string
+    // eslint-disable-next-line no-unused-vars
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
