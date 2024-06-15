@@ -21,6 +21,7 @@ type CreateUserRequestBody struct {
     Name            string `json:"name"`
     Email           string `json:"email"`
     Image           string `json:"image"`
+    Password        string `json:"password"`
 }
 
 type PublicUser struct {

@@ -3,7 +3,6 @@ package routes
 import (
 	"blueprint/models"
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"reflect"
@@ -14,6 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var UsersCollection *mongo.Collection = OpenCollection(Client, os.Getenv("USERS_COLLECTION_NAME"))
@@ -148,32 +148,54 @@ func CreateUser(c *gin.Context) {
     if err := c.ShouldBindJSON(&reqData); err != nil {
         c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
         return
-    }    
+    }
+
     var existingUser models.User
     err := UsersCollection.FindOne(ctx, bson.D{{Key: "email", Value: reqData.Email}}).Decode(&existingUser)
     if err == nil {
-        fmt.Println("exists") // Додано для логування отриманих даних
-        c.JSON(http.StatusConflict, existingUser)
-        return
+        if reqData.Password != "" {
+            // User exists, verify the password
+            if err := bcrypt.CompareHashAndPassword([]byte(existingUser.Password), []byte(reqData.Password)); err != nil {
+                c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
+                return
+            }
+            // Password matches, return the existing user
+            c.JSON(http.StatusOK, existingUser)
+            return
+        } else {
+            // GitHub login, return the existing user
+            c.JSON(http.StatusOK, existingUser)
+            return
+        }
     } else if err != mongo.ErrNoDocuments {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
     }
-    fmt.Println("dont") // Додано для логування отриманих даних
 
-    userData := models.User{
-        Name:      reqData.Name,
-        Email:     reqData.Email,
-        Image:     reqData.Image,
-        GitHubID:  reqData.ID,
-        CreatedAt: time.Now(),
+    // User does not exist, create a new user
+    if reqData.Password != "" && reqData.Name != "" {
+        hashedPassword, err := bcrypt.GenerateFromPassword([]byte(reqData.Password), bcrypt.DefaultCost)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+
+        userData := models.User{
+            Name:      reqData.Name,
+            Email:     reqData.Email,
+            Password:  string(hashedPassword),
+            Image:     reqData.Image,
+            CreatedAt: time.Now(),
+        }
+
+        _, err = UsersCollection.InsertOne(ctx, userData)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+            return
+        }
+
+        c.JSON(http.StatusCreated, userData)
+    } else {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required fields"})
     }
-
-    _, err = UsersCollection.InsertOne(ctx, userData)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
-
-    c.JSON(http.StatusCreated, userData)
 }
