@@ -25,21 +25,37 @@ func main() {
 	if api != nil{
 		// users
 		users := api.Group("users")
+
+		//GET
 		users.GET("", routes.GetAllUsers)
+		
+		//POST
 		users.POST("create", routes.CreateUser)
-		// users.PUT("update", routes.UpdateUser)
+		
+		//PATCH
+		users.PATCH("update", routes.UpdateUser)
 
 
 		// blueprints
 		blueprints := api.Group("blueprints")
+		
+		//GET
 		blueprints.GET("", routes.GetAllBlueprints)
 		blueprints.GET("user/:userId", routes.GetBlueprintsWithUser)
 		blueprints.GET(":userEmail/:id", routes.GetOneBlueprint)
+
+		//POST
 		blueprints.POST("create", routes.CreateBlueprints)
+		
+		//PATCH
 		blueprints.PATCH("update", routes.UpdateBlueprint)
 		blueprints.PATCH("add/criteria", routes.AddCriteria)
 		blueprints.PATCH("remove/criteria", routes.RemoveCriteria)
 		blueprints.PATCH("update/criteria", routes.UpdateCriteria)
+
+
+		//DELETE
+		blueprints.DELETE("delete", routes.DeleteBlueprint)
 	}
 
 	router.Run(":"+port)
