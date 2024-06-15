@@ -36,6 +36,10 @@ func main() {
 		users.PATCH("update", routes.UpdateUser)
 
 
+		//DELETE
+		users.DELETE("delete", routes.DeleteUser)
+
+
 		// blueprints
 		blueprints := api.Group("blueprints")
 		
