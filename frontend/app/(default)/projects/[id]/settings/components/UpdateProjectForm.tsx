@@ -15,7 +15,7 @@ const UpdateProjectForm: React.FC = () => {
     const { project, updateProject } = useProject()
     const { values, handleChange } = useForm(project);
     const { title, deadline, description, privacy } = values;
-    const { patchData } = usePatchData<IBlueprint>('/blueprints/update');
+    const { patchData } = usePatchData('/blueprints/update');
     const router = useRouter()
     const pathName = usePathname()
     const backURL = pathName.split("/settings")[0]

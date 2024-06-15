@@ -5,7 +5,7 @@ interface ICriteria{
     title: string;
     description: string;
     creatorEmail: string;
-    userEmail:string;
+    studentEmail:string;
     value: number;
     comments: IComment[];
     isFinished:boolean;
