@@ -17,14 +17,15 @@ const CriteriaList: React.FC = () => {
                     criteria.isFinished ? "bg-success text-milk" : "border-night border-[1px]"
                 )
 
-                if (criteria.studentEmail === "All" || criteria.studentEmail === session?.user?.email || amICreator)
+                if (criteria.studentEmail === "all" || criteria.studentEmail === session?.user?.email || amICreator)
                     return <div key={criteria.id} className='grid grid-cols-8'>
                         <div className={twMerge(
                             amICreator ? "col-span-7" : "col-span-8",
                             "p-2 bg-gray-100 rounded grid grid-cols-6"
                         )}>
-                            <div className='col-span-5'>
+                            <div className='col-span-5 relative'>
                                 <h3 className="text-lg font-semibold">{criteria.title}</h3>
+                                <span className='text-gray-400 right-[20px] top-[2px]'>To: {criteria.studentEmail}</span>
                                 <p>{criteria.description}</p>
                             </div>
 

@@ -3,7 +3,9 @@ import DeleteProfileButton from './components/DeleteProfileButton'
 
 const ProfileSettingsPage = () => {
     return (
-        <DeleteProfileButton />
+        <div>
+            <DeleteProfileButton />
+        </div>
     )
 }
 
