@@ -1,9 +1,9 @@
 import React from 'react'
-import SignOutButton from './components/SignOutButton'
+import DeleteProfileButton from './components/DeleteProfileButton'
 
 const ProfileSettingsPage = () => {
     return (
-        <SignOutButton />
+        <DeleteProfileButton />
     )
 }
 

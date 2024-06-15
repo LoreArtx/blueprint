@@ -93,6 +93,37 @@ func UpdateUser(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H{"message": bson.M{"$set": update}})
 }
 
+func DeleteUser(c *gin.Context) {
+    var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
+    defer cancel()
+
+    var reqData models.User
+    if err := c.ShouldBindJSON(&reqData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+    id := reqData.ID
+
+    if reqData.ID.IsZero() {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+        return
+    }
+
+    filter := bson.M{"_id": id}
+    result, err := UsersCollection.DeleteOne(ctx, filter)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    if result.DeletedCount == 0 {
+        c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+}
+
 // func GetUserByEmail(c *gin.Context) {
 //     var ctx, cancel = context.WithTimeout(context.Background(), DefaultTimeout)
 //     defer cancel()
