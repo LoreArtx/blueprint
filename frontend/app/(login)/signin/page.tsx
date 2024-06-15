@@ -6,15 +6,22 @@ import { useSearchParams } from 'next/navigation'
 import Button from '@/components/UI/Button'
 import Input from '@/components/UI/Input'
 import useForm from '@/hooks/useForm'
+import { signIn } from 'next-auth/react'
 
 
 const SignInPage = () => {
     const searchParams = useSearchParams()
     let callbackUrl: any = searchParams.get("callbackUrl")
-    const { values: userInfo, handleChange, setFormValues } = useForm({
+    const { values: userInfo, handleChange } = useForm({
         email: '',
         password: ''
     });
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        await signIn("credentials", { email: userInfo.email, password: userInfo.password })
+    }
+
     return (
         <section className="h-screen">
             <div className="container h-full px-6 py-24">
@@ -28,7 +35,7 @@ const SignInPage = () => {
                     </div>
 
                     <div className="md:w-8/12 lg:ms-6 lg:w-5/12">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="relative mb-6" data-twe-input-wrapper-init>
                                 <Input
                                     type="email"

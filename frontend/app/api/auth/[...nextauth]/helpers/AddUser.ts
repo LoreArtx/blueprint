@@ -1,7 +1,7 @@
-import { User } from "next-auth"
-import { AdapterUser } from "next-auth/adapters"
 
-async function AddUser(user: AdapterUser|User){
+
+async function AddUser(user:any){
+
     const res = await fetch(process.env.NEXT_PUBLIC_SERVER_API_URL + "/users/create", {
         method:"POST",
         headers:{

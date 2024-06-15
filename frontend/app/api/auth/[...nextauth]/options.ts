@@ -2,6 +2,7 @@
 
 import type { NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
+import CredentialsProvider from "next-auth/providers/credentials"
 import AddUser from "./helpers/AddUser"
 
 
@@ -11,6 +12,18 @@ export const options : NextAuthOptions = {
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {},
+      async authorize(credentials) {
+        const dbUser = await AddUser(credentials)
+        if (dbUser) {
+          return dbUser
+        } else {
+          return null
+        }
+      }
+    })
   ],
   secret: process.env.NEXTAUTH_SECRET as string,
   callbacks:{
