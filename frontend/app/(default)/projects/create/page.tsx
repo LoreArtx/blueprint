@@ -1,7 +1,6 @@
 "use client"
 
 import React from 'react';
-import ICriteria from '@/types/ICriteria';
 import useForm from '@/hooks/useForm';
 import { showToast } from '@/app/utils/showToast';
 import usePostData from '@/hooks/usePostData';
@@ -17,7 +16,7 @@ const CreateProjectPage: React.FC = () => {
         privacy: 'public' as 'public' | 'private'
     };
 
-    const { values, handleChange, setFormValues } = useForm(initialValues);
+    const { values, handleChange } = useForm(initialValues);
     const { title, deadline, description, privacy } = values;
     const { error, postData } = usePostData<IBlueprint>('/blueprints/create');
     const { data: session } = useSession()
@@ -39,7 +38,7 @@ const CreateProjectPage: React.FC = () => {
 
         values.deadline = new Date(deadline).toISOString()
         //@ts-ignore
-        await postData({ ...values, creatorID: session?.user.dbID, criterias: [] })
+        await postData({ ...values, creatorID: session?.user.dbID, criterias: [], users: [] })
 
         showToast("success", "You did it!")
     }
